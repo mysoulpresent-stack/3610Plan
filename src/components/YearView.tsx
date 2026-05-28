@@ -111,12 +111,16 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
               <Info size={16} />
             </button>
           </div>
-          <button
-            onClick={() => setShowLibrary(v => !v)}
-            className="flex items-center gap-1 text-sm font-bold text-brand-green-dark hover:text-brand-green-deep transition-colors"
-          >
-            <Plus size={14} /> 添加宣言
-          </button>
+          {profile.manifesto.filter(m => m.trim()).length >= 5 ? (
+            <span className="text-xs text-slate-300 font-medium">已达上限 5/5</span>
+          ) : (
+            <button
+              onClick={() => setShowLibrary(v => !v)}
+              className="flex items-center gap-1 text-sm font-bold text-brand-green-dark hover:text-brand-green-deep transition-colors"
+            >
+              <Plus size={14} /> 添加宣言
+            </button>
+          )}
         </div>
 
         {profile.manifesto.filter(m => m.trim()).length === 0 && (
@@ -126,12 +130,12 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
         <div className="space-y-2">
           {profile.manifesto.map((m, i) =>
             m.trim() ? (
-              <div key={i} className="flex items-center gap-3 group">
+              <div key={i} className="flex items-center gap-3">
                 <Sparkles size={14} className="text-brand-green-dark shrink-0" />
                 <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">{m}</p>
                 <button
                   onClick={() => removeManifesto(i)}
-                  className="text-slate-200 dark:text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
+                  className="text-slate-300 hover:text-red-400 transition-colors shrink-0"
                 >
                   <X size={14} />
                 </button>
