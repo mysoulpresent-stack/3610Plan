@@ -1,12 +1,24 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Trophy, TrendingUp, Info, Plus, X, Sparkles } from 'lucide-react'
+import { Trophy, TrendingUp, Info, Plus, X, Sparkles, Activity, BookOpen, Briefcase, Users, Heart } from 'lucide-react'
 import { getSprints, saveSprint } from '../lib/db'
 import {
   generateSprints, getCurrentSprintIndex, getSprintCompletion,
   MONTH_NAMES, MANIFESTO_LIBRARY,
 } from '../lib/sprints'
 import type { Sprint, UserProfile } from '../types'
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  '健康': <Activity size={14} />,
+  '成长': <BookOpen size={14} />,
+  '事业': <Briefcase size={14} />,
+  '关系': <Users size={14} />,
+  '内在': <Heart size={14} />,
+}
+
+const MANIFESTO_CATEGORY: Record<string, string> = Object.fromEntries(
+  Object.entries(MANIFESTO_LIBRARY).flatMap(([cat, items]) => items.map(item => [item, cat]))
+)
 
 interface Props {
   profile: UserProfile
@@ -131,7 +143,9 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
           {profile.manifesto.map((m, i) =>
             m.trim() ? (
               <div key={i} className="flex items-center gap-3">
-                <Sparkles size={14} className="text-brand-green-dark shrink-0" />
+                <span className="text-brand-green-dark shrink-0">
+                  {CATEGORY_ICONS[MANIFESTO_CATEGORY[m]] ?? <Sparkles size={14} />}
+                </span>
                 <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">{m}</p>
                 <button
                   onClick={() => removeManifesto(i)}
