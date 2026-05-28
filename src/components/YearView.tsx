@@ -16,6 +16,14 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   '内在': <Heart size={14} />,
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  '健康': 'text-red-500',
+  '成长': 'text-blue-500',
+  '事业': 'text-amber-500',
+  '关系': 'text-pink-500',
+  '内在': 'text-purple-500',
+}
+
 const MANIFESTO_CATEGORY: Record<string, string> = Object.fromEntries(
   Object.entries(MANIFESTO_LIBRARY).flatMap(([cat, items]) => items.map(item => [item, cat]))
 )
@@ -143,7 +151,7 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
           {profile.manifesto.map((m, i) =>
             m.trim() ? (
               <div key={i} className="flex items-center gap-3">
-                <span className="text-brand-green-dark shrink-0">
+                <span className={`shrink-0 ${CATEGORY_COLORS[MANIFESTO_CATEGORY[m]] ?? 'text-brand-green-dark'}`}>
                   {CATEGORY_ICONS[MANIFESTO_CATEGORY[m]] ?? <Sparkles size={14} />}
                 </span>
                 <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">{m}</p>
