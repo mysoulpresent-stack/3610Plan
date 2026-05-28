@@ -187,31 +187,31 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-gradient-to-br from-brand-green-deep to-brand-green-dark p-6 rounded-3xl text-white shadow-xl shadow-brand-green/10 space-y-4 relative overflow-hidden"
+          className="glass-card p-6 bg-gradient-to-br from-white to-brand-green/30 space-y-4 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10">
+          <div className="absolute top-0 right-0 p-4 opacity-5">
             <TrendingUp size={120} />
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-              <Trophy size={20} className="text-brand-yellow" />
+            <div className="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center">
+              <Trophy size={20} className="text-brand-green-deep" />
             </div>
             <div>
-              <p className="text-xs font-bold text-brand-green-light/80 uppercase tracking-widest">成长动力</p>
-              <p className="font-bold text-lg leading-tight">{motivationMsg}</p>
+              <p className="text-xs font-bold text-brand-green-dark uppercase tracking-widest">成长动力</p>
+              <p className="font-bold text-lg leading-tight text-slate-700">{motivationMsg}</p>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-4 pt-2">
+          <div className="grid grid-cols-3 gap-4 pt-2 border-t border-brand-green">
             {[
               { label: '累计打卡', value: totalCheckins, unit: '天' },
               { label: '目标数量', value: totalGoalsAchieved, unit: '个' },
               { label: '当前连胜', value: currentStreak, unit: '天' },
             ].map(stat => (
               <div key={stat.label} className="space-y-1">
-                <p className="text-[10px] font-bold text-brand-green-light/80 uppercase tracking-wider">{stat.label}</p>
-                <p className="text-2xl font-black">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
+                <p className="text-2xl font-black text-brand-green-deep">
                   {stat.value}
-                  <span className="text-xs ml-1 font-normal opacity-60">{stat.unit}</span>
+                  <span className="text-xs ml-1 font-normal text-slate-400">{stat.unit}</span>
                 </p>
               </div>
             ))}

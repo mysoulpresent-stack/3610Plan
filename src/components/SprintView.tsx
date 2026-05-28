@@ -1,10 +1,18 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ChevronLeft, Plus, X, Sparkles, Trophy } from 'lucide-react'
+import { ChevronLeft, Plus, X, Sparkles, Trophy, Activity, BookOpen, Briefcase, Users, Heart } from 'lucide-react'
 import { getSprint, saveSprint, getDayLogsBySprintId, getReportBySprintId, saveReport } from '../lib/db'
 import { getSprintInfo, CATEGORIES, GOAL_TEMPLATES } from '../lib/sprints'
 import { generateAnalysis } from '../lib/ai'
 import type { Sprint, MicroGoal, DailyLog, AIReport } from '../types'
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  '健康': <Activity size={20} />,
+  '成长': <BookOpen size={20} />,
+  '事业': <Briefcase size={20} />,
+  '关系': <Users size={20} />,
+  '内在': <Heart size={20} />,
+}
 
 interface Props {
   sprintId: string
@@ -370,7 +378,7 @@ export default function SprintView({ sprintId, manifesto, onBack, onOpenDay }: P
                           className={`flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-brand-green-dark hover:bg-brand-green/10 transition-all group`}
                         >
                           <div className={`p-3 rounded-xl ${GOAL_TEMPLATES[cat].color}`}>
-                            <span className="text-lg font-black">{cat[0]}</span>
+                            {CATEGORY_ICONS[cat]}
                           </div>
                           <div className="text-left">
                             <div className="font-bold text-slate-800 dark:text-slate-200">{cat}</div>
