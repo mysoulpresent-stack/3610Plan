@@ -147,9 +147,12 @@ export default function SettingsView({ profile, onBack }: Props) {
         )}
 
         {lastSync && (
-          <p className="text-xs text-slate-400">
-            上次同步：{new Date(lastSync).toLocaleString('zh-CN')}
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-slate-400">
+              上次同步：{new Date(lastSync).toLocaleString('zh-CN')}
+            </p>
+            <p className="text-xs text-brand-green-dark font-medium">每 15 分钟自动同步 ✓</p>
+          </div>
         )}
 
         <div className="flex gap-3">
@@ -224,10 +227,10 @@ export default function SettingsView({ profile, onBack }: Props) {
           <h3 className="font-black text-sm text-brand-green-deep dark:text-brand-green-dark">升级到付费版</h3>
         </div>
         <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-          <p>✦ 数据同步到云端，多设备访问</p>
+          <p>✦ 账号登录，数据跨设备无缝同步</p>
           <p>✦ 每周 AI 成长分析报告</p>
           <p>✦ AI 根据日记分析成长轨迹与建议</p>
-          <p>✦ 历史数据永久保存</p>
+          <p>✦ 解锁全部历史数据回顾</p>
         </div>
         <button className="w-full py-4 bg-brand-green-deep text-white rounded-2xl font-black text-lg shadow-lg shadow-brand-green/20 hover:bg-brand-green-dark hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
           <Crown size={18} />
