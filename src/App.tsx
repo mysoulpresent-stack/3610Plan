@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Moon, Sun, Settings } from 'lucide-react'
-import { getProfile, saveProfile } from './lib/db'
+import { getProfile, saveProfile, exportAllData } from './lib/db'
+import { syncIfAuthorized, getLastSyncTime } from './lib/googleDrive'
 import type { UserProfile } from './types'
 import YearView from './components/YearView'
 import SprintView from './components/SprintView'
@@ -26,6 +27,16 @@ export default function App() {
       setProfile(p ?? null)
       setLoading(false)
     })
+  }, [])
+
+  useEffect(() => {
+    if (!getLastSyncTime()) return
+    const run = async () => {
+      const json = await exportAllData()
+      await syncIfAuthorized(json)
+    }
+    const interval = setInterval(run, 15 * 60 * 1000)
+    return () => clearInterval(interval)
   }, [])
 
   async function handleOnboardingComplete(name: string) {
