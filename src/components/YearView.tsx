@@ -38,6 +38,8 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
   const [sprints, setSprints] = useState<Sprint[]>([])
   const [loading, setLoading] = useState(true)
   const [showLibrary, setShowLibrary] = useState(false)
+  const [editingIdx, setEditingIdx] = useState<number | null>(null)
+  const [editingText, setEditingText] = useState('')
   const year = new Date().getFullYear()
 
   useEffect(() => { loadSprints() }, [])
@@ -58,6 +60,15 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
     const updated = [...profile.manifesto.filter(m => m.trim()), text]
     onUpdateManifesto(updated)
     setShowLibrary(false)
+  }
+
+  function saveEdit(i: number) {
+    const trimmed = editingText.trim()
+    if (trimmed) {
+      const updated = profile.manifesto.map((m, idx) => idx === i ? trimmed : m)
+      onUpdateManifesto(updated)
+    }
+    setEditingIdx(null)
   }
 
   function removeManifesto(i: number) {
@@ -151,10 +162,29 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
           {profile.manifesto.map((m, i) =>
             m.trim() ? (
               <div key={i} className="flex items-center gap-3">
-                <span className={`shrink-0 ${CATEGORY_COLORS[MANIFESTO_CATEGORY[m]] ?? 'text-brand-green-dark'}`}>
+                <span className={`shrink-0 ${CATEGORY_COLORS[MANIFESTO_CATEGORY[editingIdx === i ? editingText : m]] ?? CATEGORY_COLORS[MANIFESTO_CATEGORY[m]] ?? 'text-brand-green-dark'}`}>
                   {CATEGORY_ICONS[MANIFESTO_CATEGORY[m]] ?? <Sparkles size={14} />}
                 </span>
-                <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300">{m}</p>
+                {editingIdx === i ? (
+                  <input
+                    autoFocus
+                    className="flex-1 text-sm font-medium text-slate-700 bg-transparent border-b border-brand-green-dark outline-none pb-0.5"
+                    value={editingText}
+                    onChange={e => setEditingText(e.target.value)}
+                    onBlur={() => saveEdit(i)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') saveEdit(i)
+                      if (e.key === 'Escape') setEditingIdx(null)
+                    }}
+                  />
+                ) : (
+                  <p
+                    className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-300 cursor-text hover:text-brand-green-deep transition-colors"
+                    onClick={() => { setEditingIdx(i); setEditingText(m) }}
+                  >
+                    {m}
+                  </p>
+                )}
                 <button
                   onClick={() => removeManifesto(i)}
                   className="text-slate-300 hover:text-red-400 transition-colors shrink-0"
