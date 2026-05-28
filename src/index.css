@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background: transparent;
+    color: rgb(30 41 59);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-width: 1px;
+    border-color: rgb(241 245 249);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+    border-radius: 1.5rem;
+    transition: background-color 300ms, border-color 300ms;
+  }
+  .input {
+    @apply w-full bg-white border border-slate-100 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300 focus:border-green-600 transition-all;
+  }
+  .textarea {
+    @apply w-full bg-white border border-slate-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-green-300 focus:border-green-600 transition-all resize-none;
+  }
+}
+
+/* Brand color utilities — defined explicitly to guarantee generation */
+@layer utilities {
+  .bg-brand-beige       { background-color: #FDFCF8; }
+  .bg-brand-green       { background-color: #E8F5E9; }
+  .bg-brand-green-light { background-color: #C8E6C9; }
+  .bg-brand-green-dark  { background-color: #4CAF50; }
+  .bg-brand-green-deep  { background-color: #1B5E20; }
+  .bg-brand-yellow      { background-color: #FFF9C4; }
+  .bg-brand-yellow-dark { background-color: #FBC02D; }
+
+  .text-brand-green       { color: #E8F5E9; }
+  .text-brand-green-light { color: #C8E6C9; }
+  .text-brand-green-dark  { color: #4CAF50; }
+  .text-brand-green-deep  { color: #1B5E20; }
+  .text-brand-yellow      { color: #FFF9C4; }
+  .text-brand-yellow-dark { color: #FBC02D; }
+
+  .border-brand-green       { border-color: #E8F5E9; }
+  .border-brand-green-dark  { border-color: #4CAF50; }
+  .border-brand-green-deep  { border-color: #1B5E20; }
+  .border-brand-yellow      { border-color: #FFF9C4; }
+  .border-brand-yellow-dark { border-color: #FBC02D; }
+
+  .ring-brand-green-deep { --tw-ring-color: #1B5E20; }
+
+  .from-brand-green       { --tw-gradient-from: #E8F5E9 var(--tw-gradient-from-position); --tw-gradient-to: rgb(232 245 233 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .to-brand-green         { --tw-gradient-to: #E8F5E9 var(--tw-gradient-to-position); }
+  .to-brand-green\/30     { --tw-gradient-to: rgb(232 245 233 / 0.3) var(--tw-gradient-to-position); }
+  .from-brand-green-deep  { --tw-gradient-from: #1B5E20 var(--tw-gradient-from-position); --tw-gradient-to: rgb(27 94 32 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .to-brand-green-dark    { --tw-gradient-to: #4CAF50 var(--tw-gradient-to-position); }
+
+  .shadow-brand-green\/10 { --tw-shadow-color: rgb(232 245 233 / 0.1); }
+  .shadow-brand-green\/20 { --tw-shadow-color: rgb(232 245 233 / 0.2); }
+}
+
+/* ── Scene backgrounds (position:fixed div, no background-attachment needed) ── */
+
+.scene-dawn {
+  background-color: #FFF5EE;
+  background-image:
+    radial-gradient(ellipse 140% 55% at 50% -8%,  rgba(140, 190, 235, 0.55) 0%, transparent 65%),
+    radial-gradient(ellipse  90% 55% at 50% 108%, rgba(255, 175,  65, 0.55) 0%, transparent 65%),
+    radial-gradient(ellipse 130% 30% at 50% 100%, rgba(255, 120, 100, 0.28) 0%, transparent 52%),
+    radial-gradient(ellipse  55% 65% at  0%  80%, rgba(255, 205, 130, 0.20) 0%, transparent 60%),
+    radial-gradient(ellipse  50% 60% at 100% 72%, rgba(255, 175, 155, 0.18) 0%, transparent 55%);
+  background-size: 100% 100%;
+}
+
+.scene-galaxy {
+  background-color: #03030c;
+  background-image:
+    radial-gradient(ellipse  80% 55% at 18%  65%, rgba(120,  40, 200, 0.28) 0%, transparent 100%),
+    radial-gradient(ellipse  65% 45% at 82%  20%, rgba( 30,  80, 240, 0.22) 0%, transparent 100%),
+    radial-gradient(ellipse  70% 50% at 52%  98%, rgba( 80,  20, 175, 0.20) 0%, transparent 100%),
+    radial-gradient(ellipse  45% 35% at 68%  55%, rgba(  0, 130, 200, 0.10) 0%, transparent 100%),
+    radial-gradient(circle at 22% 65%, rgba(255,255,255,0.95) 1px,   transparent 2px),
+    radial-gradient(circle at 72% 28%, rgba(255,255,255,0.80) 0.8px, transparent 1.5px),
+    radial-gradient(circle at 42% 54%, rgba(255,255,255,0.55) 0.5px, transparent 1px),
+    radial-gradient(circle at 14% 38%, rgba(255,255,255,0.40) 0.5px, transparent 1px);
+  background-size:
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    420px 320px, 280px 220px, 180px 155px, 130px 110px;
+  background-position:
+    0 0, 0 0, 0 0, 0 0,
+    38px 58px, 90px 28px, 22px 80px, 55px 18px;
+}
