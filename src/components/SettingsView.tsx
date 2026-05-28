@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'motion/react'
-import { ChevronLeft, Download, Upload, AlertTriangle, Crown } from 'lucide-react'
+import { ChevronLeft, Download, Upload, AlertTriangle, Crown, Cloud, CloudOff, RefreshCw } from 'lucide-react'
 import { exportAllData, importAllData } from '../lib/db'
+import { syncToGoogleDrive, restoreFromGoogleDrive, getLastSyncTime, isGoogleLoaded } from '../lib/googleDrive'
 import type { UserProfile } from '../types'
 
 interface Props {
@@ -12,8 +13,51 @@ interface Props {
 export default function SettingsView({ profile, onBack }: Props) {
   const [importing, setImporting] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [syncing, setSyncing] = useState(false)
+  const [restoring, setRestoring] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [lastSync, setLastSync] = useState<string | null>(getLastSyncTime())
+  const [googleReady, setGoogleReady] = useState(isGoogleLoaded())
   const fileRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (googleReady) return
+    const timer = setInterval(() => {
+      if (isGoogleLoaded()) { setGoogleReady(true); clearInterval(timer) }
+    }, 500)
+    return () => clearInterval(timer)
+  }, [googleReady])
+
+  function showMsg(type: 'success' | 'error', text: string) {
+    setMessage({ type, text })
+    setTimeout(() => setMessage(null), 4000)
+  }
+
+  async function handleGdriveSync() {
+    setSyncing(true)
+    try {
+      const json = await exportAllData()
+      await syncToGoogleDrive(json)
+      setLastSync(getLastSyncTime())
+      showMsg('success', '已成功同步到 Google Drive ✓')
+    } catch (e) {
+      showMsg('error', '同步失败，请重试')
+    }
+    setSyncing(false)
+  }
+
+  async function handleGdriveRestore() {
+    setRestoring(true)
+    try {
+      const json = await restoreFromGoogleDrive()
+      if (!json) { showMsg('error', 'Google Drive 上没有找到备份'); setRestoring(false); return }
+      await importAllData(json)
+      showMsg('success', '云端数据恢复成功，请刷新页面')
+    } catch {
+      showMsg('error', '恢复失败，请重试')
+    }
+    setRestoring(false)
+  }
 
   async function handleExport() {
     setExporting(true)
@@ -26,12 +70,11 @@ export default function SettingsView({ profile, onBack }: Props) {
       a.download = `36x10-backup-${new Date().toISOString().split('T')[0]}.json`
       a.click()
       URL.revokeObjectURL(url)
-      setMessage({ type: 'success', text: '备份文件已下载到你的设备' })
+      showMsg('success', '备份文件已下载到你的设备')
     } catch {
-      setMessage({ type: 'error', text: '导出失败，请重试' })
+      showMsg('error', '导出失败，请重试')
     }
     setExporting(false)
-    setTimeout(() => setMessage(null), 3000)
   }
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
@@ -41,13 +84,12 @@ export default function SettingsView({ profile, onBack }: Props) {
     try {
       const text = await file.text()
       await importAllData(text)
-      setMessage({ type: 'success', text: '数据恢复成功，请刷新页面' })
+      showMsg('success', '数据恢复成功，请刷新页面')
     } catch {
-      setMessage({ type: 'error', text: '文件格式错误，请使用正确的备份文件' })
+      showMsg('error', '文件格式错误，请使用正确的备份文件')
     }
     setImporting(false)
     if (fileRef.current) fileRef.current.value = ''
-    setTimeout(() => setMessage(null), 4000)
   }
 
   return (
@@ -83,9 +125,12 @@ export default function SettingsView({ profile, onBack }: Props) {
         </div>
       </div>
 
-      {/* Backup & Restore */}
-      <div className="glass-card p-5 bg-gradient-to-br from-white to-brand-green/30 dark:from-slate-800 dark:to-slate-900/50 space-y-4">
-        <h3 className="font-black text-sm text-slate-700 dark:text-slate-200">备份与恢复</h3>
+      {/* Google Drive Sync */}
+      <div className="glass-card p-5 bg-gradient-to-br from-white to-brand-green/30 space-y-4">
+        <div className="flex items-center gap-2">
+          <Cloud size={16} className="text-brand-green-dark" />
+          <h3 className="font-black text-sm text-slate-700">Google Drive 自动备份</h3>
+        </div>
 
         {message && (
           <motion.div
@@ -93,13 +138,50 @@ export default function SettingsView({ profile, onBack }: Props) {
             animate={{ opacity: 1, y: 0 }}
             className={`rounded-xl px-4 py-3 text-sm ${
               message.type === 'success'
-                ? 'bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400'
-                : 'bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400'
+                ? 'bg-green-50 text-green-700'
+                : 'bg-red-50 text-red-700'
             }`}
           >
             {message.text}
           </motion.div>
         )}
+
+        {lastSync && (
+          <p className="text-xs text-slate-400">
+            上次同步：{new Date(lastSync).toLocaleString('zh-CN')}
+          </p>
+        )}
+
+        <div className="flex gap-3">
+          <button
+            onClick={handleGdriveSync}
+            disabled={!googleReady || syncing}
+            className="flex-1 flex items-center justify-center gap-2 py-3 bg-brand-green-deep text-white rounded-xl text-sm font-bold hover:bg-brand-green-dark transition-colors disabled:opacity-40"
+          >
+            {syncing
+              ? <><RefreshCw size={14} className="animate-spin" /> 同步中…</>
+              : <><Cloud size={14} /> {lastSync ? '立即同步' : '连接并同步'}</>
+            }
+          </button>
+          <button
+            onClick={handleGdriveRestore}
+            disabled={!googleReady || restoring}
+            className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50 transition-colors disabled:opacity-40"
+          >
+            {restoring
+              ? <><RefreshCw size={14} className="animate-spin" /> 恢复中…</>
+              : <><CloudOff size={14} /> 从云端恢复</>
+            }
+          </button>
+        </div>
+        {!googleReady && (
+          <p className="text-xs text-slate-300 text-center">Google 服务加载中…</p>
+        )}
+      </div>
+
+      {/* Backup & Restore */}
+      <div className="glass-card p-5 bg-gradient-to-br from-white to-brand-green/30 dark:from-slate-800 dark:to-slate-900/50 space-y-4">
+        <h3 className="font-black text-sm text-slate-700 dark:text-slate-200">备份与恢复</h3>
 
         <div className="space-y-3">
           <div className="flex items-center justify-between rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800/50 p-4">
