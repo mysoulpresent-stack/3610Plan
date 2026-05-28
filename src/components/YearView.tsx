@@ -162,7 +162,7 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
           {profile.manifesto.map((m, i) =>
             m.trim() ? (
               <div key={i} className="flex items-center gap-3">
-                <span className={`shrink-0 ${CATEGORY_COLORS[MANIFESTO_CATEGORY[editingIdx === i ? editingText : m]] ?? CATEGORY_COLORS[MANIFESTO_CATEGORY[m]] ?? 'text-brand-green-dark'}`}>
+                <span className={`shrink-0 ${CATEGORY_COLORS[MANIFESTO_CATEGORY[m]] ?? 'text-brand-green-dark'}`}>
                   {CATEGORY_ICONS[MANIFESTO_CATEGORY[m]] ?? <Sparkles size={14} />}
                 </span>
                 {editingIdx === i ? (
