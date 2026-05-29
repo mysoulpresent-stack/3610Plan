@@ -34,7 +34,6 @@ export default function SprintView({ sprintId, manifesto, onBack, onOpenDay }: P
   const [showUpgradeNote, setShowUpgradeNote] = useState(false)
   const [report, setReport] = useState<AIReport | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
-  const [analyzeError, setAnalyzeError] = useState<string | null>(null)
 
   const nonEmptyManifesto = manifesto.filter(m => m.trim())
 
@@ -113,7 +112,6 @@ export default function SprintView({ sprintId, manifesto, onBack, onOpenDay }: P
   async function handleAnalyze() {
     if (!sprint) return
     setAnalyzing(true)
-    setAnalyzeError(null)
     const sprintInfo = getSprintInfo(sprint)
     try {
       const content = await generateAnalysis({
@@ -151,7 +149,7 @@ export default function SprintView({ sprintId, manifesto, onBack, onOpenDay }: P
       await saveReport(newReport)
       setReport(newReport)
     } catch (err) {
-      setAnalyzeError(err instanceof Error ? err.message : '分析失败，请稍后重试')
+      console.error(err)
     } finally {
       setAnalyzing(false)
     }

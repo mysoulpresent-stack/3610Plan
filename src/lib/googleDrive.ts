@@ -16,7 +16,7 @@ declare global {
             scope: string
             callback: (response: { access_token?: string; error?: string }) => void
           }) => {
-            requestAccessToken: () => void
+            requestAccessToken: (options?: { prompt?: string }) => void
             callback: (r: { access_token?: string; error?: string }) => void
           }
         }
