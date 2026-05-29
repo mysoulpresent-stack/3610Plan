@@ -120,7 +120,8 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
     >
       {/* Year header */}
       <header className="glass-card p-6 bg-gradient-to-br from-white to-brand-green/30 dark:from-slate-800 dark:to-slate-900/50">
-        <div className="space-y-2">
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-brand-green-dark tracking-wide">你好，{profile.name} 👋</p>
           <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-brand-green-deep dark:text-brand-green-dark leading-none">
             {year}
           </h1>

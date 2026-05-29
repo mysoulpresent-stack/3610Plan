@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Moon, Sun, Settings } from 'lucide-react'
 import { getProfile, saveProfile, exportAllData } from './lib/db'
-import { syncIfAuthorized, getLastSyncTime } from './lib/googleDrive'
+import { syncIfAuthorized, syncToGoogleDrive, getLastSyncTime } from './lib/googleDrive'
 import type { UserProfile } from './types'
 import YearView from './components/YearView'
 import SprintView from './components/SprintView'
@@ -39,7 +39,7 @@ export default function App() {
     return () => clearInterval(interval)
   }, [])
 
-  async function handleOnboardingComplete(name: string) {
+  async function handleOnboardingComplete(name: string, connectDrive: boolean) {
     const newProfile: UserProfile = {
       id: 'local-user',
       name,
@@ -49,6 +49,14 @@ export default function App() {
     }
     await saveProfile(newProfile)
     setProfile(newProfile)
+    if (connectDrive) {
+      try {
+        const json = await exportAllData()
+        await syncToGoogleDrive(json)
+      } catch {
+        // user cancelled OAuth or Drive unavailable — silently continue
+      }
+    }
   }
 
   async function handleUpdateProfile(updates: Partial<UserProfile>) {
