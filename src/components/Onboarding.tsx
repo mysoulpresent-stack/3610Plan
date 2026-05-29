@@ -70,7 +70,7 @@ export default function Onboarding({ onComplete }: Props) {
               </div>
 
               <div className="space-y-3 text-left">
-                <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">你叫什么名字？</label>
+                <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">怎么称呼你？</label>
                 <input
                   className="input"
                   placeholder="输入你的名字或昵称"
