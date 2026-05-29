@@ -77,7 +77,6 @@ export default function Onboarding({ onComplete }: Props) {
                   value={name}
                   onChange={e => setName(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && name.trim() && setStep('drive')}
-                  autoFocus
                 />
               </div>
 
