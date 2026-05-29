@@ -82,48 +82,45 @@
 }
 
 .scene-galaxy {
-  background-color: #07061a;
+  background-color: #1c0a50;
   background-image:
-    /* Purple-to-navy diagonal sweep */
-    linear-gradient(148deg,
-      rgba(80, 10, 140, 0.55) 0%,
-      rgba(30, 15, 100, 0.35) 40%,
-      rgba( 5, 20,  95, 0.55) 75%,
-      rgba( 0, 25,  80, 0.30) 100%),
-    /* Nebula blooms */
-    radial-gradient(ellipse 100% 65% at 15% 25%, rgba(135, 30, 215, 0.35) 0%, transparent 70%),
-    radial-gradient(ellipse  75% 55% at 85% 75%, rgba( 25, 55, 225, 0.30) 0%, transparent 70%),
-    radial-gradient(ellipse  80% 45% at 60%  5%, rgba( 90, 20, 195, 0.20) 0%, transparent 65%),
-    radial-gradient(ellipse  55% 42% at  5% 88%, rgba( 50, 10, 165, 0.25) 0%, transparent 62%),
-    radial-gradient(ellipse  50% 38% at 92% 32%, rgba( 15, 70, 235, 0.20) 0%, transparent 60%),
-    /* White stars */
+    /* Stars — white */
     radial-gradient(circle at 22% 65%, rgba(255,255,255,0.95) 1px,   transparent 2px),
-    radial-gradient(circle at 72% 28%, rgba(255,255,255,0.85) 0.8px, transparent 1.5px),
-    radial-gradient(circle at 42% 54%, rgba(255,255,255,0.70) 0.6px, transparent 1px),
-    radial-gradient(circle at 14% 38%, rgba(255,255,255,0.60) 0.5px, transparent 1px),
-    radial-gradient(circle at 85% 45%, rgba(255,255,255,0.80) 0.7px, transparent 1.5px),
-    radial-gradient(circle at 55% 82%, rgba(255,255,255,0.65) 0.5px, transparent 1px),
-    radial-gradient(circle at 35% 12%, rgba(255,255,255,0.75) 0.8px, transparent 1.5px),
-    radial-gradient(circle at 90% 85%, rgba(255,255,255,0.70) 0.6px, transparent 1px),
-    /* Blue-purple tinted stars */
-    radial-gradient(circle at 50% 35%, rgba(200,215,255,0.70) 0.7px, transparent 1.2px),
-    radial-gradient(circle at 78% 55%, rgba(220,205,255,0.55) 0.5px, transparent 1px),
-    radial-gradient(circle at 30% 75%, rgba(210,225,255,0.60) 0.6px, transparent 1px),
-    radial-gradient(circle at 95% 10%, rgba(200,210,255,0.75) 0.8px, transparent 1.5px),
-    radial-gradient(circle at  8% 20%, rgba(215,205,255,0.55) 0.5px, transparent 1px),
-    radial-gradient(circle at 62% 92%, rgba(200,220,255,0.50) 0.4px, transparent 0.8px);
+    radial-gradient(circle at 72% 28%, rgba(255,255,255,0.90) 0.8px, transparent 1.5px),
+    radial-gradient(circle at 42% 54%, rgba(255,255,255,0.75) 0.6px, transparent 1px),
+    radial-gradient(circle at 14% 38%, rgba(255,255,255,0.65) 0.5px, transparent 1px),
+    radial-gradient(circle at 85% 45%, rgba(255,255,255,0.85) 0.7px, transparent 1.5px),
+    radial-gradient(circle at 55% 82%, rgba(255,255,255,0.70) 0.5px, transparent 1px),
+    radial-gradient(circle at 35% 12%, rgba(255,255,255,0.80) 0.8px, transparent 1.5px),
+    radial-gradient(circle at 90% 85%, rgba(255,255,255,0.75) 0.6px, transparent 1px),
+    /* Stars — blue-purple tint */
+    radial-gradient(circle at 50% 35%, rgba(210,225,255,0.80) 0.7px, transparent 1.2px),
+    radial-gradient(circle at 78% 55%, rgba(225,210,255,0.65) 0.5px, transparent 1px),
+    radial-gradient(circle at 30% 75%, rgba(215,230,255,0.70) 0.6px, transparent 1px),
+    radial-gradient(circle at 95% 10%, rgba(210,215,255,0.85) 0.8px, transparent 1.5px),
+    radial-gradient(circle at  8% 20%, rgba(220,210,255,0.65) 0.5px, transparent 1px),
+    radial-gradient(circle at 62% 92%, rgba(205,225,255,0.60) 0.4px, transparent 0.8px),
+    /* Nebula glow */
+    radial-gradient(ellipse 85% 55% at 15% 20%, rgba(180, 60, 255, 0.30) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 50% at 85% 80%, rgba( 50, 90, 255, 0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 75% 40% at 55%  2%, rgba(140, 40, 230, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 38% at  3% 90%, rgba( 80, 20, 200, 0.25) 0%, transparent 58%),
+    /* Base gradient — rich purple → deep navy (painted last = furthest back) */
+    linear-gradient(155deg, #3d1282 0%, #21095c 28%, #110e6a 58%, #060c52 82%, #04093c 100%);
   background-size:
-    100% 100%,
-    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    /* stars */
     420px 330px, 290px 220px, 360px 280px, 230px 185px,
     315px 255px, 270px 205px, 385px 295px, 245px 195px,
     325px 265px, 275px 215px, 310px 250px, 260px 200px,
-    285px 225px, 240px 190px;
+    285px 225px, 240px 190px,
+    /* nebula + gradient */
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    100% 100%;
   background-position:
-    0 0,
-    0 0, 0 0, 0 0, 0 0, 0 0,
     38px  58px,  90px  28px,  22px  80px,  55px 18px,
    140px  45px,  68px 120px,  15px  35px, 110px 75px,
    200px  90px, 130px 140px,  75px  60px, 160px 30px,
-    48px 105px, 185px  65px;
+    48px 105px, 185px  65px,
+    0 0, 0 0, 0 0, 0 0,
+    0 0;
 }
