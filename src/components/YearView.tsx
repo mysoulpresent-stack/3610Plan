@@ -207,17 +207,29 @@ export default function YearView({ profile, onSelectSprint, onUpdateManifesto }:
             >
               {Object.entries(MANIFESTO_LIBRARY).map(([cat, items]) => (
                 <div key={cat} className="p-3 border-b border-slate-50 dark:border-slate-800 last:border-0">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{cat}</p>
+                  <div className={`flex items-center gap-1.5 mb-2 ${CATEGORY_COLORS[cat] ?? 'text-slate-400'}`}>
+                    {CATEGORY_ICONS[cat]}
+                    <p className="text-xs font-bold uppercase tracking-wider">{cat}</p>
+                  </div>
                   <div className="space-y-1">
-                    {items.map(item => (
-                      <button
-                        key={item}
-                        onClick={() => addManifesto(item)}
-                        className="block w-full text-left text-sm text-slate-600 dark:text-slate-300 hover:text-brand-green-deep dark:hover:text-brand-green-dark hover:bg-brand-green/20 px-2 py-1 rounded-lg transition-all"
-                      >
-                        {item}
-                      </button>
-                    ))}
+                    {items.map(item => {
+                      const alreadyAdded = profile.manifesto.includes(item)
+                      return (
+                        <button
+                          key={item}
+                          onClick={() => !alreadyAdded && addManifesto(item)}
+                          disabled={alreadyAdded}
+                          className={`flex items-center justify-between w-full text-left text-sm px-2 py-1 rounded-lg transition-all ${
+                            alreadyAdded
+                              ? 'text-slate-300 cursor-not-allowed'
+                              : 'text-slate-600 dark:text-slate-300 hover:text-brand-green-deep dark:hover:text-brand-green-dark hover:bg-brand-green/20'
+                          }`}
+                        >
+                          {item}
+                          {alreadyAdded && <span className="text-brand-green-dark text-xs">✓</span>}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               ))}
